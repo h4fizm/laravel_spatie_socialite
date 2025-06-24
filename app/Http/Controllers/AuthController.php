@@ -26,11 +26,21 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect('/dashboard');
+            $user = Auth::user();
+
+            if ($user->hasRole('admin')) {
+                return redirect('/admin/page1');
+            } elseif ($user->hasRole('customer')) {
+                return redirect('/customer/page1');
+            }
+
+            // Fallback
+            return redirect('/');
         }
 
         return back()->withErrors(['email' => 'Email atau password salah.']);
     }
+
 
     public function register(Request $request)
     {
@@ -48,14 +58,14 @@ class AuthController extends Controller
         ]);
 
         $user->assignRole($request->role);
-        Auth::login($user);
 
-        return redirect('/dashboard');
+        // Setelah register, tidak langsung login
+        return redirect('/')->with('success', 'Pendaftaran berhasil. Silakan login.');
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('/login');
+        return redirect('/');
     }
 }
