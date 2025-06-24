@@ -31,6 +31,13 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-success w-100">Register</button>
+            <hr>
+            <div class="text-center mt-3">
+                <a href="{{ url('/auth/google') }}" class="btn btn-danger w-100">
+                    <i class="bi bi-google"></i> Daftar dengan Google
+                </a>
+            </div>
+
         </form>
 
         <div class="mt-3 text-center">
